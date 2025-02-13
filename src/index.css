@@ -15,14 +15,33 @@ body {
 .first {
   text-align: center;
   font-size: 2.5rem;
+  margin: 0;
+  padding: 0;
 }
 
-img {
+.img {
   width: 100%;
   height: 150px;
-  border-top: solid #fff 1px;
-  border-bottom: solid #fff 1px;
+  border-top: solid #c7a317 1px;
+  border-bottom: solid #c7a317 1px;
   margin-bottom: 50px;
+  margin-top: 30px;
+}
+
+.background {
+  background-image: url("/img/background.jpg");
+  height: 30vh;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.content {
+  padding-top: 50px;
+  padding-bottom: 50px;
+  background-color: #222;
+  text-align: center;
 }
 
 /* Navbar */
@@ -201,6 +220,26 @@ input[type="submit"]:hover {
 
 .delete:hover {
   color: #8b0000;
+}
+
+/* Maps */
+
+.maps-container {
+  width: 100%;
+  text-align: center;
+}
+
+.maps-container h1 {
+  margin-top: 100px;
+  font-size: 2.5rem;
+}
+
+.maps-container iframe {
+  width: 100%;
+  height: 250px;
+  margin-bottom: 50px;
+  border-top: solid 2px #c7a317;
+  border-bottom: solid 2px #c7a317;
 }
 
 /* Footer */
