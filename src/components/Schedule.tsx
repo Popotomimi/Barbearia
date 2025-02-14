@@ -120,9 +120,7 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
             />
           </div>
           <div className="form-control">
-            <label>
-              Hora: <span>(Agendamento de 30min em 30min)</span>
-            </label>
+            <label>Hora:</label>
             <input
               type="time"
               step="1800"
@@ -160,7 +158,7 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
             <div className="info">
               {" "}
               <h3>{cliente.name}</h3> <p>{cliente.date}</p>{" "}
-              <p>{cliente.time}</p>{" "}
+              <p>{cliente.time}</p>
             </div>{" "}
             <div className="actions"></div>{" "}
           </div>

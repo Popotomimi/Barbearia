@@ -1,7 +1,9 @@
 // Axios
 import axios from "axios";
+
 // Hooks
 import { FormEvent, useEffect, useRef, useState } from "react";
+
 // Icons
 import { FiEdit } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
@@ -16,10 +18,19 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
   const [name, setName] = useState<string>("");
   const [date, setDate] = useState<string>("");
   const [time, setTime] = useState<string>("");
+  const [service, setService] = useState<string>("");
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [currentClientId, setCurrentClientId] = useState<string | null>(null);
   const formRef = useRef<HTMLDivElement>(null);
+
+  const services = [
+    { name: "Só sombrancelha (15min)", duration: 15 },
+    { name: "Só pésinho (10min)", duration: 10 },
+    { name: "Corte (40min)", duration: 40 },
+    { name: "Corte+sombrancelha (50min)", duration: 50 },
+    { name: "Corte+barba+sobrancelha (1h e 10min)", duration: 70 },
+  ];
 
   const fetchClientes = async () => {
     try {
@@ -38,6 +49,7 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
     setName("");
     setDate("");
     setTime("");
+    setService("");
     setIsEditing(false);
     setCurrentClientId(null);
   };
@@ -58,7 +70,15 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
       return;
     }
 
-    const cliente = { name, date, time };
+    const selectedService = services.find((srv) => srv.name === service);
+
+    const cliente = {
+      name,
+      date,
+      time,
+      service: selectedService?.name,
+      duration: selectedService?.duration,
+    };
 
     try {
       setIsButtonDisabled(true);
@@ -100,6 +120,7 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
     setName(cliente.name);
     setDate(cliente.date);
     setTime(cliente.time);
+    setService(cliente.service);
     setIsEditing(true);
     setCurrentClientId(cliente._id);
     formRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -107,7 +128,7 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
 
   return (
     <div>
-      <h1 className="first">Admim Page</h1>
+      <h1 className="first">Admin Page</h1>
       <div className="make-schedule" ref={formRef}>
         <h1>{isEditing ? "Editar Agendamento" : "Faça seu Agendamento"}</h1>
         <form onSubmit={handleSubmit}>
@@ -129,15 +150,25 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
             />
           </div>
           <div className="form-control">
-            <label>
-              Hora: <span>(Agendamento de 30min em 30min)</span>
-            </label>
+            <label>Hora:</label>
             <input
               type="time"
-              step="1800"
               value={time}
               onChange={(e) => setTime(e.target.value)}
             />
+          </div>
+          <div className="form-control">
+            <label>Serviço:</label>
+            <select
+              value={service}
+              onChange={(e) => setService(e.target.value)}>
+              <option value="">Selecione um serviço</option>
+              {services.map((srv) => (
+                <option key={srv.name} value={srv.name}>
+                  {srv.name}
+                </option>
+              ))}
+            </select>
           </div>
           {isButtonDisabled ? (
             <input type="submit" disabled value="Aguarde..." />
@@ -154,6 +185,7 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
               <h3>{cliente.name}</h3>
               <p>{cliente.date}</p>
               <p>{cliente.time}</p>
+              <p>{cliente.service}</p>
             </div>
             <div className="actions">
               <label onClick={() => startEdit(cliente)}>Editar</label>
