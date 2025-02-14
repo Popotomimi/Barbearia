@@ -113,6 +113,13 @@ nav li {
   border-radius: 5px;
 }
 
+.form-control select {
+  width: 93%;
+  padding: 10px;
+  border: 1px solid #c7a41791;
+  border-radius: 5px;
+}
+
 input[type="submit"] {
   background-color: #c7a317;
   color: #ffffff;
