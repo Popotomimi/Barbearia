@@ -128,7 +128,7 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
 
   return (
     <div>
-      <h1 className="first">Admin Page</h1>
+      <h1 className="first gap">Admin Page</h1>
       <div className="make-schedule" ref={formRef}>
         <h1>{isEditing ? "Editar Agendamento" : "Faça seu Agendamento"}</h1>
         <form onSubmit={handleSubmit}>
