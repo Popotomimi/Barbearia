@@ -12,6 +12,15 @@ body {
   color: #fff;
 }
 
+::selection {
+  background-color: #c7a317;
+  color: #fff;
+}
+
+a {
+  color: #222;
+}
+
 .first {
   text-align: center;
   font-size: 2.5rem;
