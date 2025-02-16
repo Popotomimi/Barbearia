@@ -7,6 +7,8 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 // Icons
 import { FiEdit } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
+
+// Message
 import { toast } from "react-toastify";
 
 interface ScheduleProps {
@@ -54,30 +56,65 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
     setCurrentClientId(null);
   };
 
-  const checkAvailability = () => {
-    return clientes.some(
-      (cliente) =>
+  const calculateEndTime = (startTime: string, duration: number): string => {
+    const [hours, minutes] = startTime.split(":").map(Number);
+    const totalMinutes = hours * 60 + minutes + duration;
+    const endHours = Math.floor(totalMinutes / 60);
+    const endMinutes = totalMinutes % 60;
+    return `${endHours.toString().padStart(2, "0")}:${endMinutes
+      .toString()
+      .padStart(2, "0")}`;
+  };
+
+  const checkAvailability = (): boolean => {
+    const selectedService = services.find((srv) => srv.name === service);
+    if (!selectedService) return true;
+
+    const newEndTime = calculateEndTime(time, selectedService.duration);
+
+    return clientes.some((cliente) => {
+      const existingStartTime = cliente.time;
+      const existingService = services.find(
+        (srv) => srv.name === cliente.service
+      );
+      if (!existingService) return false;
+
+      const existingEndTime = calculateEndTime(
+        existingStartTime,
+        existingService.duration
+      );
+
+      return (
         cliente.date === date &&
-        cliente.time === time &&
+        time < existingEndTime &&
+        newEndTime > existingStartTime &&
         cliente._id !== currentClientId
-    );
+      );
+    });
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    if (!name || !date || !time || !service) {
+      toast.warning("Por favor, preencha todos os campos.");
+      return;
+    }
+
+    const selectedService = services.find((srv) => srv.name === service);
+    if (!selectedService) return;
+
     if (checkAvailability()) {
       toast.warning("Já agendaram nesse horário ou data, tente outro!");
       return;
     }
 
-    const selectedService = services.find((srv) => srv.name === service);
-
     const cliente = {
       name,
       date,
       time,
-      service: selectedService?.name,
-      duration: selectedService?.duration,
+      service: selectedService.name,
+      duration: selectedService.duration,
     };
 
     try {

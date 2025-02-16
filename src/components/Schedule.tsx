@@ -48,14 +48,50 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
     setService("");
   };
 
-  const checkAvailability = () => {
-    return clientes.some(
-      (cliente) => cliente.date === date && cliente.time === time
-    );
+  const calculateEndTime = (startTime: string, duration: number): string => {
+    const [hours, minutes] = startTime.split(":").map(Number);
+    const totalMinutes = hours * 60 + minutes + duration;
+    const endHours = Math.floor(totalMinutes / 60);
+    const endMinutes = totalMinutes % 60;
+    return `${endHours.toString().padStart(2, "0")}:${endMinutes
+      .toString()
+      .padStart(2, "0")}`;
+  };
+
+  const checkAvailability = (): boolean => {
+    const selectedService = services.find((srv) => srv.name === service);
+    if (!selectedService) return true;
+
+    const newEndTime = calculateEndTime(time, selectedService.duration);
+
+    return clientes.some((cliente) => {
+      const existingStartTime = cliente.time;
+      const existingService = services.find(
+        (srv) => srv.name === cliente.service
+      );
+      if (!existingService) return false;
+
+      const existingEndTime = calculateEndTime(
+        existingStartTime,
+        existingService.duration
+      );
+
+      return (
+        cliente.date === date &&
+        time < existingEndTime &&
+        newEndTime > existingStartTime
+      );
+    });
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    if (!name || !date || !time || !service) {
+      toast.warning("Por favor, preencha todos os campos.");
+      return;
+    }
+
     if (checkAvailability()) {
       toast.warning("Já agendaram nesse horário ou data, tente outro!");
       return;
@@ -159,6 +195,7 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
               {" "}
               <h3>{cliente.name}</h3> <p>{cliente.date}</p>{" "}
               <p>{cliente.time}</p>
+              <p>{cliente.service}</p>
             </div>{" "}
             <div className="actions"></div>{" "}
           </div>
