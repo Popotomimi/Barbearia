@@ -41,6 +41,10 @@ a {
   margin-top: 30px;
 }
 
+option {
+  color: #000;
+}
+
 .background {
   background-image: url("/img/background.jpg");
   height: 30vh;
