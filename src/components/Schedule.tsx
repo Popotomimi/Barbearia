@@ -1,10 +1,5 @@
-// Axios
 import axios from "axios";
-
-// Hooks
 import { FormEvent, useEffect, useRef, useState } from "react";
-
-// Message
 import { toast } from "react-toastify";
 
 interface ScheduleProps {
@@ -17,6 +12,7 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
   const [date, setDate] = useState<string>("");
   const [time, setTime] = useState<string>("");
   const [service, setService] = useState<string>("");
+  const [selectedBarber, setSelectedBarber] = useState<string>("");
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
   const formRef = useRef<HTMLDivElement>(null);
 
@@ -46,6 +42,7 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
     setDate("");
     setTime("");
     setService("");
+    setSelectedBarber("");
   };
 
   const calculateEndTime = (startTime: string, duration: number): string => {
@@ -87,7 +84,7 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    if (!name || !date || !time || !service) {
+    if (!name || !date || !time || !service || !selectedBarber) {
       toast.warning("Por favor, preencha todos os campos.");
       return;
     }
@@ -105,6 +102,7 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
       time,
       service: selectedService?.name,
       duration: selectedService?.duration,
+      barber: selectedBarber,
     };
 
     try {
@@ -177,6 +175,16 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
               ))}
             </select>
           </div>
+          <div className="form-control">
+            <label>Barbeiro:</label>
+            <select
+              value={selectedBarber}
+              onChange={(e) => setSelectedBarber(e.target.value)}>
+              <option value="">Selecione um barbeiro</option>
+              <option value="Gabriel">Gabriel</option>
+              <option value="Gui">Gui</option>
+            </select>
+          </div>
           {isButtonDisabled ? (
             <input type="submit" disabled value="Aguarde..." />
           ) : (
@@ -193,11 +201,15 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
             {" "}
             <div className="info">
               {" "}
-              <h3>{cliente.name}</h3> <p>{cliente.date}</p>{" "}
+              <h3>{cliente.name}</h3>
+              <p>{new Date(cliente.date).toLocaleDateString("pt-BR")}</p>
               <p>{cliente.time}</p>
               <p>{cliente.service}</p>
             </div>{" "}
-            <div className="actions"></div>{" "}
+            <div className="actions">
+              <span>Barbeiro:</span>
+              <p>{cliente.barber}</p>
+            </div>{" "}
           </div>
         ))}{" "}
       </div>{" "}

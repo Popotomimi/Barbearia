@@ -1,14 +1,7 @@
-// Axios
 import axios from "axios";
-
-// Hooks
 import { FormEvent, useEffect, useRef, useState } from "react";
-
-// Icons
 import { FiEdit } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
-
-// Message
 import { toast } from "react-toastify";
 
 interface ScheduleProps {
@@ -21,6 +14,7 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
   const [date, setDate] = useState<string>("");
   const [time, setTime] = useState<string>("");
   const [service, setService] = useState<string>("");
+  const [selectedBarber, setSelectedBarber] = useState<string>("");
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [currentClientId, setCurrentClientId] = useState<string | null>(null);
@@ -33,6 +27,8 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
     { name: "Corte+sombrancelha (50min)", duration: 50 },
     { name: "Corte+barba+sobrancelha (1h e 10min)", duration: 70 },
   ];
+
+  const barbers = ["Gabriel", "Gui"];
 
   const fetchClientes = async () => {
     try {
@@ -52,6 +48,7 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
     setDate("");
     setTime("");
     setService("");
+    setSelectedBarber("");
     setIsEditing(false);
     setCurrentClientId(null);
   };
@@ -96,7 +93,7 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    if (!name || !date || !time || !service) {
+    if (!name || !date || !time || !service || !selectedBarber) {
       toast.warning("Por favor, preencha todos os campos.");
       return;
     }
@@ -115,6 +112,7 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
       time,
       service: selectedService.name,
       duration: selectedService.duration,
+      barber: selectedBarber,
     };
 
     try {
@@ -158,6 +156,7 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
     setDate(cliente.date);
     setTime(cliente.time);
     setService(cliente.service);
+    setSelectedBarber(cliente.barber);
     setIsEditing(true);
     setCurrentClientId(cliente._id);
     formRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -207,6 +206,19 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
               ))}
             </select>
           </div>
+          <div className="form-control">
+            <label>Barbeiro:</label>
+            <select
+              value={selectedBarber}
+              onChange={(e) => setSelectedBarber(e.target.value)}>
+              <option value="">Selecione um barbeiro</option>
+              {barbers.map((barber) => (
+                <option key={barber} value={barber}>
+                  {barber}
+                </option>
+              ))}
+            </select>
+          </div>
           {isButtonDisabled ? (
             <input type="submit" disabled value="Aguarde..." />
           ) : (
@@ -220,9 +232,10 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
           <div className="agenda" key={cliente._id}>
             <div className="info">
               <h3>{cliente.name}</h3>
-              <p>{cliente.date}</p>
+              <p>{new Date(cliente.date).toLocaleDateString("pt-BR")}</p>
               <p>{cliente.time}</p>
               <p>{cliente.service}</p>
+              <p>{cliente.barber}</p>
             </div>
             <div className="actions">
               <label onClick={() => startEdit(cliente)}>Editar</label>

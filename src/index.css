@@ -168,7 +168,7 @@ input[type="submit"]:hover {
   color: #333;
   border-left: solid 5px #c7a317;
   padding: 0;
-  padding-left: 5px;
+  padding-left: 10px;
 }
 
 .agenda {
@@ -204,6 +204,17 @@ input[type="submit"]:hover {
 .actions {
   display: flex;
   align-items: center;
+}
+
+.actions span {
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+.actions p {
+  font-size: 0.8rem;
+  font-style: italic;
+  margin-left: 0.5rem;
 }
 
 .actions label {
