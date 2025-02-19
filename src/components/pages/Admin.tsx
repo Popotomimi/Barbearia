@@ -239,7 +239,7 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
             <div className="agenda" key={cliente._id}>
               <div className="info">
                 <h3>{cliente.name}</h3>
-                <p>{new Date(cliente.date).toLocaleDateString("pt-BR")}</p>
+                <p>{cliente.date}</p>
                 <p>{cliente.time}</p>
                 <p>{cliente.service}</p>
                 <p>{cliente.barber}</p>
