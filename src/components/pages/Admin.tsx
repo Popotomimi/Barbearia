@@ -14,6 +14,7 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
   const [date, setDate] = useState<string>("");
   const [time, setTime] = useState<string>("");
   const [service, setService] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
   const [selectedBarber, setSelectedBarber] = useState<string>("");
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -54,6 +55,7 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
     setSelectedBarber("");
     setIsEditing(false);
     setCurrentClientId(null);
+    setPhone("");
   };
 
   const calculateEndTime = (startTime: string, duration: number): string => {
@@ -95,7 +97,7 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    if (!name || !date || !time || !service || !selectedBarber) {
+    if (!name || !date || !time || !service || !selectedBarber || !phone) {
       toast.warning("Por favor, preencha todos os campos.");
       return;
     }
@@ -115,6 +117,7 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
       service: selectedService.name,
       duration: selectedService.duration,
       barber: selectedBarber,
+      phone,
     };
 
     try {
@@ -221,6 +224,14 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
               ))}
             </select>
           </div>
+          <div className="form-control">
+            <label>Número de telefone:</label>
+            <input
+              type="text"
+              placeholder="+55 (11) 99999-9999"
+              onChange={(e) => setPhone(e.target.value)}
+            />
+          </div>
           {isButtonDisabled ? (
             <input type="submit" disabled value="Aguarde..." />
           ) : (
@@ -243,6 +254,7 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
                 <p>{cliente.time}</p>
                 <p>{cliente.service}</p>
                 <p>{cliente.barber}</p>
+                <p>{cliente.phone}</p>
               </div>
               <div className="actions">
                 <label onClick={() => startEdit(cliente)}>Editar</label>

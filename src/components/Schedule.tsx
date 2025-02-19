@@ -10,6 +10,7 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
   const [date, setDate] = useState<string>("");
   const [time, setTime] = useState<string>("");
   const [service, setService] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
   const [selectedBarber, setSelectedBarber] = useState<string>("");
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -40,6 +41,7 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
     setTime("");
     setService("");
     setSelectedBarber("");
+    setPhone("");
   };
   const calculateEndTime = (startTime: string, duration: number): string => {
     const [hours, minutes] = startTime.split(":").map(Number);
@@ -89,6 +91,7 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
       service: selectedService?.name,
       duration: selectedService?.duration,
       barber: selectedBarber,
+      phone,
     };
     try {
       setIsButtonDisabled(true);
@@ -181,6 +184,14 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
               <option value="Gui">Gui</option>{" "}
             </select>{" "}
           </div>{" "}
+          <div className="form-control">
+            <label>Número de Telefone:</label>
+            <input
+              type="text"
+              placeholder="+55 (11) 95278-9867"
+              onChange={(e) => setPhone(e.target.value)}
+            />
+          </div>
           {isButtonDisabled ? (
             <input type="submit" disabled value="Aguarde..." />
           ) : (
