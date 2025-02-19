@@ -18,6 +18,7 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [currentClientId, setCurrentClientId] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const formRef = useRef<HTMLDivElement>(null);
 
   const services = [
@@ -36,6 +37,8 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
       setClientes(response.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -84,8 +87,7 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
       return (
         cliente.date === date &&
         time < existingEndTime &&
-        newEndTime > existingStartTime &&
-        cliente._id !== currentClientId
+        newEndTime > existingStartTime
       );
     });
   };
@@ -228,26 +230,34 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
       </div>
       <div className="agenda-container">
         <h2>Agenda:</h2>
-        {clientes.map((cliente) => (
-          <div className="agenda" key={cliente._id}>
-            <div className="info">
-              <h3>{cliente.name}</h3>
-              <p>{new Date(cliente.date).toLocaleDateString("pt-BR")}</p>
-              <p>{cliente.time}</p>
-              <p>{cliente.service}</p>
-              <p>{cliente.barber}</p>
-            </div>
-            <div className="actions">
-              <label onClick={() => startEdit(cliente)}>Editar</label>
-              <FiEdit className="edit" onClick={() => startEdit(cliente)} />
-              <label onClick={() => deleteCliente(cliente._id)}>Remover</label>
-              <MdDelete
-                onClick={() => deleteCliente(cliente._id)}
-                className="delete"
-              />
-            </div>
+        {isLoading ? (
+          <div className="loading-container">
+            <div className="loader"></div>
           </div>
-        ))}
+        ) : (
+          clientes.map((cliente) => (
+            <div className="agenda" key={cliente._id}>
+              <div className="info">
+                <h3>{cliente.name}</h3>
+                <p>{new Date(cliente.date).toLocaleDateString("pt-BR")}</p>
+                <p>{cliente.time}</p>
+                <p>{cliente.service}</p>
+                <p>{cliente.barber}</p>
+              </div>
+              <div className="actions">
+                <label onClick={() => startEdit(cliente)}>Editar</label>
+                <FiEdit className="edit" onClick={() => startEdit(cliente)} />
+                <label onClick={() => deleteCliente(cliente._id)}>
+                  Remover
+                </label>
+                <MdDelete
+                  onClick={() => deleteCliente(cliente._id)}
+                  className="delete"
+                />
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
