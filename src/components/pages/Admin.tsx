@@ -3,6 +3,8 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import { FiEdit } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
 import { toast } from "react-toastify";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 interface ScheduleProps {
   api: string;
@@ -226,10 +228,15 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
           </div>
           <div className="form-control">
             <label>Número de telefone:</label>
-            <input
-              type="text"
+            <PhoneInput
+              className="phone-mask"
+              defaultCountry="BR"
               placeholder="+55 (11) 99999-9999"
-              onChange={(e) => setPhone(e.target.value)}
+              onChange={(phone) => {
+                if (phone) {
+                  setPhone(phone);
+                }
+              }}
             />
           </div>
           {isButtonDisabled ? (

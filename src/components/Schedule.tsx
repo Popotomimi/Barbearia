@@ -1,9 +1,13 @@
 import axios from "axios";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
+
 interface ScheduleProps {
   api: string;
 }
+
 const Schedule: React.FC<ScheduleProps> = ({ api }) => {
   const [clientes, setClientes] = useState<any[]>([]);
   const [name, setName] = useState<string>("");
@@ -22,6 +26,7 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
     { name: "Corte+sombrancelha (50min)", duration: 50 },
     { name: "Corte+barba+sobrancelha (1h e 10min)", duration: 70 },
   ];
+
   const fetchClientes = async () => {
     try {
       const response = await axios.get(`${api}/cliente`);
@@ -32,6 +37,7 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
       setIsLoading(false);
     }
   };
+
   useEffect(() => {
     fetchClientes();
   }, [api]);
@@ -43,6 +49,7 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
     setSelectedBarber("");
     setPhone("");
   };
+
   const calculateEndTime = (startTime: string, duration: number): string => {
     const [hours, minutes] = startTime.split(":").map(Number);
     const totalMinutes = hours * 60 + minutes + duration;
@@ -52,6 +59,7 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
       .toString()
       .padStart(2, "0")}`;
   };
+
   const checkAvailability = (): boolean => {
     const selectedService = services.find((srv) => srv.name === service);
     if (!selectedService) return true;
@@ -61,11 +69,13 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
       const existingService = services.find(
         (srv) => srv.name === cliente.service
       );
+
       if (!existingService) return false;
       const existingEndTime = calculateEndTime(
         existingStartTime,
         existingService.duration
       );
+
       return (
         cliente.date === date &&
         time < existingEndTime &&
@@ -73,17 +83,22 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
       );
     });
   };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
     if (!name || !date || !time || !service || !selectedBarber) {
       toast.warning("Por favor, preencha todos os campos.");
       return;
     }
+
     if (checkAvailability()) {
       toast.warning("Já agendaram nesse horário ou data, tente outro!");
       return;
     }
+
     const selectedService = services.find((srv) => srv.name === service);
+
     const cliente = {
       name,
       date,
@@ -93,6 +108,7 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
       barber: selectedBarber,
       phone,
     };
+
     try {
       setIsButtonDisabled(true);
       await axios.post(`${api}/cliente`, cliente);
@@ -186,10 +202,15 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
           </div>{" "}
           <div className="form-control">
             <label>Número de Telefone:</label>
-            <input
-              type="text"
-              placeholder="+55 (11) 95278-9867"
-              onChange={(e) => setPhone(e.target.value)}
+            <PhoneInput
+              className="phone-mask"
+              defaultCountry="BR"
+              placeholder="+55 (11) 99999-9999"
+              onChange={(phone) => {
+                if (phone) {
+                  setPhone(phone);
+                }
+              }}
             />
           </div>
           {isButtonDisabled ? (

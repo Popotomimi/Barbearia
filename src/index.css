@@ -123,11 +123,21 @@ nav li {
 
 .form-control input[type="text"],
 .form-control input[type="date"],
-.form-control input[type="time"] {
+.form-control input[type="time"],
+.phone-mask {
   width: 90%;
   padding: 10px;
   border: 1px solid #c7a41791;
   border-radius: 5px;
+}
+
+.PhoneInputInput {
+  border: none;
+  padding: 5px;
+}
+
+.PhoneInputInput::placeholder {
+  color: #000;
 }
 
 .form-control select {
