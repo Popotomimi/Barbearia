@@ -6,6 +6,7 @@ import "react-phone-number-input/style.css";
 import Map from "./Map";
 import Banner from "./Banner";
 import Agenda from "./Agenda";
+import Image from "./Image";
 
 interface ScheduleProps {
   api: string;
@@ -49,6 +50,13 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
     setService("");
     setSelectedBarber("");
     setPhone("");
+
+    if (formRef.current) {
+      const phoneInputElement = formRef.current.querySelector(".phone-mask");
+      if (phoneInputElement) {
+        phoneInputElement.value = "";
+      }
+    }
   };
 
   const calculateEndTime = (startTime: string, duration: number): string => {
@@ -61,29 +69,36 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
       .padStart(2, "0")}`;
   };
 
-  const checkAvailability = (): boolean => {
+  const checkAvailability = (): string | null => {
     const selectedService = services.find((srv) => srv.name === service);
-    if (!selectedService) return true;
+    if (!selectedService) return null;
 
     const newEndTime = calculateEndTime(time, selectedService.duration);
 
-    return clientes.some((cliente) => {
-      if (cliente.barber !== selectedBarber) return false;
-
-      if (cliente.date !== date) return false;
+    for (const cliente of clientes) {
+      if (cliente.barber !== selectedBarber) continue;
+      if (cliente.date !== date) continue;
 
       const existingService = services.find(
         (srv) => srv.name === cliente.service
       );
-      if (!existingService) return false;
+      if (!existingService) continue;
 
       const existingEndTime = calculateEndTime(
         cliente.time,
         existingService.duration
       );
 
-      return time < existingEndTime && newEndTime > cliente.time;
-    });
+      if (time < existingEndTime && newEndTime > cliente.time) {
+        if (time < cliente.time) {
+          return `O horário desejado é antes de ${cliente.time}. Por favor, selecione um horário que não conflite.`;
+        } else {
+          return `O horário desejado conflita com um agendamento que termina às ${existingEndTime}. Por favor, escolha outro horário.`;
+        }
+      }
+    }
+
+    return null;
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -94,8 +109,9 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
       return;
     }
 
-    if (checkAvailability()) {
-      toast.warning("Já agendaram nesse horário ou data, tente outro!");
+    const availabilityMessage = checkAvailability();
+    if (availabilityMessage) {
+      toast.warning(availabilityMessage);
       return;
     }
 
@@ -131,6 +147,7 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
       setIsButtonDisabled(false);
     }
   };
+
   return (
     <div>
       <Banner />
@@ -192,9 +209,10 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
               className="phone-mask"
               defaultCountry="BR"
               placeholder="+55 (11) 99999-9999"
+              value={phone}
               onChange={(phone) => {
                 if (phone) {
-                  setPhone(phone);
+                  setPhone(phone || "");
                 }
               }}
             />
@@ -206,8 +224,9 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
           )}{" "}
         </form>
       </div>
+      <div className="separate"></div>
       <Agenda clientes={clientes} />
-      <img className="img" src="/img/tesoura.jpg" alt="Imagem de uma tesoura" />
+      <Image />
       <Map />
     </div>
   );

@@ -70,67 +70,68 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
       .padStart(2, "0")}`;
   };
 
-  const checkAvailability = (): boolean => {
+  const checkAvailability = (): string | null => {
     const selectedService = services.find((srv) => srv.name === service);
-    if (!selectedService) return true;
+    if (!selectedService) return null;
 
     const newEndTime = calculateEndTime(time, selectedService.duration);
 
-    return clientes.some((cliente) => {
-      const existingStartTime = cliente.time;
+    for (const cliente of clientes) {
+      if (cliente.barber !== selectedBarber) continue;
+      if (cliente.date !== date) continue;
+
       const existingService = services.find(
         (srv) => srv.name === cliente.service
       );
-      if (!existingService) return false;
+      if (!existingService) continue;
 
       const existingEndTime = calculateEndTime(
-        existingStartTime,
+        cliente.time,
         existingService.duration
       );
 
-      return (
-        cliente.date === date &&
-        time < existingEndTime &&
-        newEndTime > existingStartTime
-      );
-    });
+      if (time < existingEndTime && newEndTime > cliente.time) {
+        if (time < cliente.time) {
+          return `O horário desejado é antes de ${cliente.time}. Por favor, selecione um horário que não conflite.`;
+        } else {
+          return `O horário desejado conflita com um agendamento que termina às ${existingEndTime}. Por favor, escolha outro horário.`;
+        }
+      }
+    }
+
+    return null;
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    if (!name || !date || !time || !service || !selectedBarber || !phone) {
+    if (!name || !date || !time || !service || !selectedBarber) {
       toast.warning("Por favor, preencha todos os campos.");
       return;
     }
 
-    const selectedService = services.find((srv) => srv.name === service);
-    if (!selectedService) return;
-
-    if (checkAvailability()) {
-      toast.warning("Já agendaram nesse horário ou data, tente outro!");
+    const availabilityMessage = checkAvailability();
+    if (availabilityMessage) {
+      toast.warning(availabilityMessage);
       return;
     }
+
+    const selectedService = services.find((srv) => srv.name === service);
 
     const cliente = {
       name,
       date,
       time,
-      service: selectedService.name,
-      duration: selectedService.duration,
+      service: selectedService?.name,
+      duration: selectedService?.duration,
       barber: selectedBarber,
       phone,
     };
 
     try {
       setIsButtonDisabled(true);
-      if (isEditing && currentClientId) {
-        await axios.patch(`${api}/cliente/${currentClientId}`, cliente);
-        toast.success("Agendamento editado com sucesso!");
-      } else {
-        await axios.post(`${api}/cliente`, cliente);
-        toast.success("Agendamento realizado com sucesso!");
-      }
+      await axios.post(`${api}/cliente`, cliente);
+      toast.success("Agendamento realizado com sucesso!");
       resetForm();
       fetchClientes();
     } catch (error: any) {
