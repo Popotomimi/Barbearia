@@ -7,13 +7,25 @@ import Map from "./Map";
 import Banner from "./Banner";
 import Agenda from "./Agenda";
 import Image from "./Image";
+import { AxiosError } from "axios";
 
 interface ScheduleProps {
   api: string;
 }
 
+interface Cliente {
+  _id: string;
+  name: string;
+  date: string;
+  time: string;
+  service: string;
+  duration?: number;
+  barber: string;
+  phone?: string;
+}
+
 const Schedule: React.FC<ScheduleProps> = ({ api }) => {
-  const [clientes, setClientes] = useState<any[]>([]);
+  const [clientes, setClientes] = useState<Cliente[]>([]);
   const [name, setName] = useState<string>("");
   const [date, setDate] = useState<string>("");
   const [time, setTime] = useState<string>("");
@@ -50,13 +62,6 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
     setService("");
     setSelectedBarber("");
     setPhone("");
-
-    if (formRef.current) {
-      const phoneInputElement = formRef.current.querySelector(".phone-mask");
-      if (phoneInputElement) {
-        phoneInputElement.value = "";
-      }
-    }
   };
 
   const calculateEndTime = (startTime: string, duration: number): string => {
@@ -133,12 +138,8 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
       toast.success("Agendamento realizado com sucesso!");
       resetForm();
       fetchClientes();
-    } catch (error: any) {
-      if (
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
+    } catch (error: unknown) {
+      if (error instanceof AxiosError && error.response?.data?.message) {
         toast.error(error.response.data.message);
       } else {
         toast.error("Erro desconhecido. Tente novamente mais tarde.");

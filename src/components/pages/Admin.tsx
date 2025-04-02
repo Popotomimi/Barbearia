@@ -5,13 +5,25 @@ import { MdDelete } from "react-icons/md";
 import { toast } from "react-toastify";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
+import { AxiosError } from "axios";
 
 interface ScheduleProps {
   api: string;
 }
 
+interface Cliente {
+  _id: string;
+  name: string;
+  date: string;
+  time: string;
+  service: string;
+  duration?: number;
+  barber: string;
+  phone?: string;
+}
+
 const Admin: React.FC<ScheduleProps> = ({ api }) => {
-  const [clientes, setClientes] = useState<any[]>([]);
+  const [clientes, setClientes] = useState<Cliente[]>([]);
   const [name, setName] = useState<string>("");
   const [date, setDate] = useState<string>("");
   const [time, setTime] = useState<string>("");
@@ -130,16 +142,21 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
 
     try {
       setIsButtonDisabled(true);
-      await axios.post(`${api}/cliente`, cliente);
-      toast.success("Agendamento realizado com sucesso!");
+
+      if (isEditing && currentClientId) {
+        // Modo de edição: Atualize o cliente existente
+        await axios.patch(`${api}/cliente/${currentClientId}`, cliente);
+        toast.success("Agendamento atualizado com sucesso!");
+      } else {
+        // Modo de criação: Adicione um novo cliente
+        await axios.post(`${api}/cliente`, cliente);
+        toast.success("Agendamento realizado com sucesso!");
+      }
+
       resetForm();
       fetchClientes();
-    } catch (error: any) {
-      if (
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
+    } catch (error: unknown) {
+      if (error instanceof AxiosError && error.response?.data?.message) {
         toast.error(error.response.data.message);
       } else {
         toast.error("Erro desconhecido. Tente novamente mais tarde.");
@@ -149,17 +166,17 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
     }
   };
 
-  const deleteCliente = async (id: any) => {
+  const deleteCliente = async (id: string | number) => {
     try {
       await axios.delete(`${api}/cliente/${id}`);
       toast.success("Agendamento removido com sucesso");
       fetchClientes();
-    } catch (error) {
+    } catch {
       toast.error("Tente novamente mais tarde");
     }
   };
 
-  const startEdit = (cliente: any) => {
+  const startEdit = (cliente: Cliente) => {
     setName(cliente.name);
     setDate(cliente.date);
     setTime(cliente.time);
@@ -233,6 +250,7 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
               className="phone-mask"
               defaultCountry="BR"
               placeholder="+55 (11) 99999-9999"
+              value={phone}
               onChange={(phone) => {
                 if (phone) {
                   setPhone(phone);
