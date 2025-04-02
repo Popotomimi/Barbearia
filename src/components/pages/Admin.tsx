@@ -6,21 +6,8 @@ import { toast } from "react-toastify";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { AxiosError } from "axios";
-
-interface ScheduleProps {
-  api: string;
-}
-
-interface Cliente {
-  _id: string;
-  name: string;
-  date: string;
-  time: string;
-  service: string;
-  duration?: number;
-  barber: string;
-  phone?: string;
-}
+import Cliente from "../../interfaces/Cliente";
+import ScheduleProps from "../../interfaces/ScheduleProps";
 
 const Admin: React.FC<ScheduleProps> = ({ api }) => {
   const [clientes, setClientes] = useState<Cliente[]>([]);
@@ -189,7 +176,7 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
 
   return (
     <div>
-      <h1 className="first gap">Admin Page</h1>
+      <h1 className="first gap">Administre seus Clientes</h1>
       <div className="make-schedule" ref={formRef}>
         <h1>{isEditing ? "Editar Agendamento" : "Faça seu Agendamento"}</h1>
         <form onSubmit={handleSubmit}>
@@ -265,6 +252,7 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
           )}
         </form>
       </div>
+      <div className="separate"></div>
       <div className="agenda-container">
         <h2>Agenda:</h2>
         {isLoading ? (

@@ -1,11 +1,4 @@
-interface Cliente {
-  _id: string;
-  name: string;
-  date: string;
-  time: string;
-  service: string;
-  barber: string;
-}
+import Cliente from "../interfaces/Cliente";
 
 const Agenda = ({ clientes }: { clientes: Cliente[] }) => {
   const isLoading = clientes.length === 0;

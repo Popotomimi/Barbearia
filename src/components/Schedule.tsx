@@ -8,21 +8,8 @@ import Banner from "./Banner";
 import Agenda from "./Agenda";
 import Image from "./Image";
 import { AxiosError } from "axios";
-
-interface ScheduleProps {
-  api: string;
-}
-
-interface Cliente {
-  _id: string;
-  name: string;
-  date: string;
-  time: string;
-  service: string;
-  duration?: number;
-  barber: string;
-  phone?: string;
-}
+import Cliente from "../interfaces/Cliente";
+import ScheduleProps from "../interfaces/ScheduleProps";
 
 const Schedule: React.FC<ScheduleProps> = ({ api }) => {
   const [clientes, setClientes] = useState<Cliente[]>([]);
