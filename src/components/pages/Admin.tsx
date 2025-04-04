@@ -1,13 +1,12 @@
 import axios from "axios";
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { FiEdit } from "react-icons/fi";
-import { MdDelete } from "react-icons/md";
 import { toast } from "react-toastify";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { AxiosError } from "axios";
 import Cliente from "../../interfaces/Cliente";
 import ScheduleProps from "../../interfaces/ScheduleProps";
+import AgendaAdmin from "../AgendaAdmin";
 
 const Admin: React.FC<ScheduleProps> = ({ api }) => {
   const [clientes, setClientes] = useState<Cliente[]>([]);
@@ -253,38 +252,12 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
         </form>
       </div>
       <div className="separate"></div>
-      <div className="agenda-container">
-        <h2>Agenda:</h2>
-        {isLoading ? (
-          <div className="loading-container">
-            <div className="loader"></div>
-          </div>
-        ) : (
-          clientes.map((cliente) => (
-            <div className="agenda" key={cliente._id}>
-              <div className="info">
-                <h3>{cliente.name}</h3>
-                <p>{cliente.date}</p>
-                <p>{cliente.time}</p>
-                <p>{cliente.service}</p>
-                <p>{cliente.barber}</p>
-                <p>{cliente.phone}</p>
-              </div>
-              <div className="actions">
-                <label onClick={() => startEdit(cliente)}>Editar</label>
-                <FiEdit className="edit" onClick={() => startEdit(cliente)} />
-                <label onClick={() => deleteCliente(cliente._id)}>
-                  Remover
-                </label>
-                <MdDelete
-                  onClick={() => deleteCliente(cliente._id)}
-                  className="delete"
-                />
-              </div>
-            </div>
-          ))
-        )}
-      </div>
+      <AgendaAdmin
+        isLoading={isLoading}
+        clientes={clientes}
+        deleteCliente={deleteCliente}
+        startEdit={startEdit}
+      />
     </div>
   );
 };

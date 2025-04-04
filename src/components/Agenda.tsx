@@ -10,23 +10,20 @@ const Agenda = ({ clientes }: { clientes: Cliente[] }) => {
         <div className="loading-container">
           <div className="loader"></div>
         </div>
-      ) : clientes.length > 0 ? (
-        clientes.map((cliente) => (
-          <div className="agenda" key={cliente._id}>
-            <div className="info">
-              <h3>{cliente.name}</h3>
-              <p>Data: {cliente.date}</p>
-              <p>Hora: {cliente.time}</p>
-              <p>Serviço: {cliente.service}</p>
-            </div>
-            <div className="actions">
-              <span>Barbeiro: </span>
-              <p>{cliente.barber}</p>
-            </div>
-          </div>
-        ))
       ) : (
-        <p>Nenhum cliente agendado.</p>
+        <div className="agenda-grid">
+          {clientes.map((cliente) => (
+            <div className="agenda-card" key={cliente._id}>
+              <div className="info">
+                <h3>{cliente.name}</h3>
+                <p>Data: {cliente.date}</p>
+                <p>Hora: {cliente.time}</p>
+                <p>Serviço: {cliente.service}</p>
+                <p>Barbeiro: {cliente.barber}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );
