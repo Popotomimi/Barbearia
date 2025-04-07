@@ -6,7 +6,7 @@ import "react-phone-number-input/style.css";
 import Map from "./Map";
 import Banner from "./Banner";
 import Agenda from "./Agenda";
-import Image from "./Image";
+import Carrossel from "./Carrossel";
 import { AxiosError } from "axios";
 import Cliente from "../interfaces/Cliente";
 import ScheduleProps from "../interfaces/ScheduleProps";
@@ -41,6 +41,18 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
   useEffect(() => {
     fetchClientes();
   }, [api]);
+
+  useEffect(() => {
+    const savedName = localStorage.getItem("userName");
+    const savedPhone = localStorage.getItem("userPhone");
+
+    if (savedName) {
+      setName(savedName);
+    }
+    if (savedPhone) {
+      setPhone(savedPhone);
+    }
+  }, []);
 
   const resetForm = () => {
     setName("");
@@ -123,6 +135,10 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
       setIsButtonDisabled(true);
       await axios.post(`${api}/cliente`, cliente);
       toast.success("Agendamento realizado com sucesso!");
+
+      localStorage.setItem("userName", name);
+      localStorage.setItem("userPhone", phone);
+
       resetForm();
       fetchClientes();
     } catch (error: unknown) {
@@ -140,7 +156,11 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
     <div>
       <Banner />
       <div className="make-schedule" ref={formRef}>
-        <h1>Faça seu Agendamento</h1>
+        {name ? (
+          <h1>{`Bem vindo ${name} faça seu agendamento`}</h1>
+        ) : (
+          <h1>Faça seu Agendamento</h1>
+        )}
         <form onSubmit={handleSubmit}>
           <div className="form-control">
             <label>Nome:</label>
@@ -214,7 +234,9 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
       </div>
       <div className="separate"></div>
       <Agenda clientes={clientes} />
-      <Image />
+      <div className="separate"></div>
+      <Carrossel />
+      <div className="separate"></div>
       <Map />
     </div>
   );
