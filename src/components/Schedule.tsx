@@ -234,9 +234,7 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
       </div>
       <div className="separate"></div>
       <Agenda clientes={clientes} />
-      <div className="separate"></div>
       <Carrossel />
-      <div className="separate"></div>
       <Map />
     </div>
   );
