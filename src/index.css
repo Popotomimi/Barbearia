@@ -161,6 +161,10 @@ nav li {
   border-radius: 5px;
 }
 
+.acceptTerms {
+  margin-bottom: 20px;
+}
+
 input[type="submit"] {
   background-color: #333;
   color: #ffffff;
@@ -449,6 +453,24 @@ iframe {
   height: 300px;
   border: 0;
   border-radius: 5px;
+}
+
+/* terms-of-use */
+
+.terms-of-use {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: #333;
+  line-height: 2rem;
+  margin-top: 100px;
+}
+
+.terms-of-use p {
+  max-width: 600px;
 }
 
 /* Footer */

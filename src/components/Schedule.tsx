@@ -225,6 +225,16 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
               }}
             />
           </div>
+          <div className="acceptTerms">
+            <input type="checkbox" id="acceptTerms" required />
+            <label htmlFor="acceptTerms">
+              Ao enviar este formulário, você concorda com nossos{" "}
+              <strong>
+                <a href="/terms">Termos de Uso e Política de Privacidade</a>
+              </strong>
+              .
+            </label>
+          </div>
           {isButtonDisabled ? (
             <input type="submit" disabled value="Aguarde..." />
           ) : (

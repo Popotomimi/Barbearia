@@ -12,6 +12,7 @@ import Schedule from "./components/Schedule";
 
 // Pages
 import Admin from "./components/pages/Admin";
+import TermsOfUse from "./components/pages/TermsOfUse";
 
 function App() {
   const api: string = "https://backendbarbearia-6205.onrender.com/api";
@@ -23,6 +24,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Schedule api={api} />} />
         <Route path="/admin" element={<Admin api={api} />} />
+        <Route path="/terms" element={<TermsOfUse />} />
       </Routes>
       <Footer />
     </BrowserRouter>
