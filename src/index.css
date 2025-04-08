@@ -377,6 +377,18 @@ svg.edit:hover {
   }
 }
 
+.icon-warning {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-warning svg {
+  width: 150px;
+  height: 250px;
+  color: orange;
+}
+
 /* Carrossel */
 
 .conteudo {

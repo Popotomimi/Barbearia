@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Cliente from "../interfaces/Cliente";
 import { FcCalendar } from "react-icons/fc";
+import { LuMessageCircleWarning } from "react-icons/lu";
 
 const Agenda = ({ clientes }: { clientes: Cliente[] }) => {
   const [filter, setFilter] = useState<string | null>(null);
@@ -26,11 +27,12 @@ const Agenda = ({ clientes }: { clientes: Cliente[] }) => {
         <button onClick={() => setFilter(null)}>Todos</button>
       </div>
       {isLoading ? (
-        <div className="loading-container">
-          <div className="loader"></div>
-        </div>
-      ) : filteredClientes.length === 0 ? (
-        <p className="no-appointments">Ainda não temos agendamentos hoje</p>
+        <>
+          <p className="no-appointments">Ainda não temos agendamentos hoje</p>
+          <div className="icon-warning">
+            <LuMessageCircleWarning />
+          </div>
+        </>
       ) : (
         <div className="agenda-grid">
           {filteredClientes.map((cliente) => (

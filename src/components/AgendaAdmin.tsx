@@ -3,6 +3,7 @@ import { FiEdit } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
 import { FcCalendar } from "react-icons/fc";
 import AgendaAdminProps from "../interfaces/AgendaAdminProps";
+import { LuMessageCircleWarning } from "react-icons/lu";
 
 const AgendaAdmin = ({
   isLoading,
@@ -36,7 +37,12 @@ const AgendaAdmin = ({
             <div className="loader"></div>
           </div>
         ) : filteredClientes.length === 0 ? (
-          <p className="no-appointments">Ainda não temos agendamentos hoje</p>
+          <>
+            <p className="no-appointments">Ainda não temos agendamentos hoje</p>
+            <div className="icon-warning">
+              <LuMessageCircleWarning />
+            </div>
+          </>
         ) : (
           <div className="agenda-grid">
             {filteredClientes.map((cliente) => (

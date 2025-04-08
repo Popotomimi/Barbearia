@@ -15,7 +15,7 @@ import Admin from "./components/pages/Admin";
 import TermsOfUse from "./components/pages/TermsOfUse";
 
 function App() {
-  const api: string = "https://backendbarbearia-6205.onrender.com/api";
+  const api: string = `${import.meta.env.VITE_API_URL}`;
 
   return (
     <BrowserRouter>

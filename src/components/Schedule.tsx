@@ -31,7 +31,7 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
 
   const fetchClientes = async () => {
     try {
-      const response = await axios.get(`${api}/cliente`);
+      const response = await axios.get(`${api}/cliente/agendadodia`);
       setClientes(response.data);
     } catch (error) {
       console.log(error);
