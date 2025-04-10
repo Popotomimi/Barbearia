@@ -7,6 +7,7 @@ import { AxiosError } from "axios";
 import Cliente from "../../interfaces/Cliente";
 import ScheduleProps from "../../interfaces/ScheduleProps";
 import AgendaAdmin from "../AgendaAdmin";
+import { NavbarAdmin } from "../NavbarAdmin";
 
 const Admin: React.FC<ScheduleProps> = ({ api }) => {
   const [clientes, setClientes] = useState<Cliente[]>([]);
@@ -175,6 +176,7 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
 
   return (
     <div>
+      <NavbarAdmin />
       <h1 className="first gap">Administre seus Clientes</h1>
       <div className="make-schedule" ref={formRef}>
         <h1>{isEditing ? "Editar Agendamento" : "Faça seu Agendamento"}</h1>

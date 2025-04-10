@@ -1,15 +1,16 @@
 import ScheduleProps from "../../interfaces/ScheduleProps";
-import Cliente from "../../interfaces/Cliente";
+import History from "../../interfaces/History";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Agenda from "../Agenda";
+import { Link } from "react-router-dom";
+import { NavbarAdmin } from "../NavbarAdmin";
 
 const Dashboard: React.FC<ScheduleProps> = ({ api }) => {
-  const [clientes, setClientes] = useState<Cliente[]>([]);
+  const [clientes, setClientes] = useState<History[]>([]);
 
   const fetchClientes = async () => {
     try {
-      const response = await axios.get(`${api}/cliente/agendadodia`);
+      const response = await axios.get(`${api}/cliente/historico/all`);
       setClientes(response.data);
     } catch (error) {
       console.log(error);
@@ -21,9 +22,29 @@ const Dashboard: React.FC<ScheduleProps> = ({ api }) => {
   }, [api]);
 
   return (
-    <div>
+    <div className="dashboard-container">
+      <NavbarAdmin />
       <h1>Dashboard</h1>
-      <Agenda clientes={clientes} />
+      <table>
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Telefone</th>
+            <th>Atendimentos</th>
+          </tr>
+        </thead>
+        <tbody>
+          {clientes.map((cliente, index) => (
+            <tr key={index}>
+              <td>
+                <Link to={`/cliente/${cliente._id}`}>{cliente.name}</Link>{" "}
+              </td>
+              <td>{cliente.phone}</td>
+              <td>{cliente.amount}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

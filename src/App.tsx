@@ -14,6 +14,7 @@ import Schedule from "./components/Schedule";
 import Admin from "./components/pages/Admin";
 import TermsOfUse from "./components/pages/TermsOfUse";
 import Dashboard from "./components/pages/Dashboard";
+import HistoryDetails from "./components/HistoryDetails";
 
 function App() {
   const api: string = `${import.meta.env.VITE_API_URL}`;
@@ -27,6 +28,7 @@ function App() {
         <Route path="/admin" element={<Admin api={api} />} />
         <Route path="/terms" element={<TermsOfUse />} />
         <Route path="/dashboard" element={<Dashboard api={api} />} />
+        <Route path="/cliente/:id" element={<HistoryDetails api={api} />} />
       </Routes>
       <Footer />
     </BrowserRouter>
