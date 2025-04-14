@@ -1,6 +1,9 @@
+import Navbar from "../Navbar";
+
 const TermsOfUse = () => {
   return (
     <div className="terms-of-use">
+      <Navbar />
       <h2>Termos de Uso e Política de Privacidade</h2>
       <p>
         Ao enviar este formulário, você concorda com a coleta e armazenamento de

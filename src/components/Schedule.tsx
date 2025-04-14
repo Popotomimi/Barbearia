@@ -10,6 +10,7 @@ import Carrossel from "./Carrossel";
 import { AxiosError } from "axios";
 import Cliente from "../interfaces/Cliente";
 import ScheduleProps from "../interfaces/ScheduleProps";
+import Navbar from "./Navbar";
 
 const Schedule: React.FC<ScheduleProps> = ({ api }) => {
   const [clientes, setClientes] = useState<Cliente[]>([]);
@@ -154,6 +155,7 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
 
   return (
     <div>
+      <Navbar />
       <Banner />
       <div className="make-schedule" ref={formRef}>
         {name ? (

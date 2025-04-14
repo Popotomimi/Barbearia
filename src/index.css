@@ -105,10 +105,6 @@ nav li {
 
 /* Navbar Admin */
 
-.navbar-admin {
-  background-color: #000;
-}
-
 .navbar-admin ul {
   display: flex;
   justify-content: space-between;
@@ -120,6 +116,50 @@ nav li {
   font-size: 1rem;
   padding-left: 15px;
   padding-right: 15px;
+}
+
+.search-bar input {
+  border: solid 1px #c7a317;
+  border-radius: 5px;
+  padding: 6px;
+  margin-right: 10px;
+  background-color: #f1f1f1;
+  max-width: 100px;
+}
+
+.search-bar button {
+  padding: 5px;
+  border: solid 1px transparent;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.search-bar button:hover {
+  border: solid 1px #c7a317;
+  background-color: #222;
+  color: #fff;
+}
+
+/* Seach Results */
+
+.search-results-container {
+  min-height: 80vh;
+  color: #fff;
+}
+
+.search-results-container h2 {
+  margin-top: 100px;
+  text-align: center;
+}
+
+.search-results-container ul {
+  list-style: none;
+  color: #fff;
+}
+
+.search-results-container a {
+  color: #fff;
 }
 
 /* Form */
@@ -544,7 +584,7 @@ th {
   color: #222;
   margin: 70px auto;
   padding: 20px;
-  width: 90%;
+  width: 80%;
   border: 1px solid #ddd;
   border-radius: 8px;
   background-color: #f9f9f9;
