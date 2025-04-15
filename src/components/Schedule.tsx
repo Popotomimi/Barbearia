@@ -22,11 +22,14 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
   const [selectedBarber, setSelectedBarber] = useState<string>("");
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
   const formRef = useRef<HTMLDivElement>(null);
+
   const services = [
-    { name: "Só sombrancelha (15min)", duration: 15 },
-    { name: "Só pésinho (10min)", duration: 10 },
+    { name: "Sombrancelha (15min)", duration: 15 },
+    { name: "Pésinho (10min)", duration: 10 },
+    { name: "Barba(20min)", duration: 20 },
     { name: "Corte (40min)", duration: 40 },
-    { name: "Corte+sombrancelha (50min)", duration: 50 },
+    { name: "Corte+Sombrancelha (50min)", duration: 50 },
+    { name: "Corte+Barba (1h)", duration: 60 },
     { name: "Corte+barba+sobrancelha (1h e 10min)", duration: 70 },
   ];
 

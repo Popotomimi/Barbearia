@@ -6,7 +6,7 @@ interface Cliente {
   service: string;
   duration?: number;
   barber: string;
-  phone?: string;
+  phone: string;
 }
 
 export default Cliente;

@@ -526,7 +526,7 @@ iframe {
   border-radius: 5px;
 }
 
-/* terms-of-use */
+/* Terms Of Use */
 
 .terms-of-use {
   text-align: center;
@@ -542,6 +542,18 @@ iframe {
 
 .terms-of-use p {
   max-width: 600px;
+}
+
+.terms-of-use a {
+  color: #c7a317;
+}
+
+.info-icon {
+  font-size: 10rem;
+  padding: 5px;
+  border: solid 1px #ffc107;
+  border-radius: 50%;
+  color: #ffc107;
 }
 
 /* Dashboard */
@@ -709,6 +721,10 @@ footer span:hover {
   input[type="submit"] {
     width: 30%;
     margin: 0 auto;
+  }
+
+  .form-control select {
+    width: 96%;
   }
 
   /* Agenda */
