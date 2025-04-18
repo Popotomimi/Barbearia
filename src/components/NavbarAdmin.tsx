@@ -16,7 +16,7 @@ export const NavbarAdmin = () => {
     <nav className="navbar-admin">
       <ul>
         <li>
-          <Link to="/admin">Admin Page</Link>
+          <Link to="/admin">Agenda</Link>
         </li>
         <div className="search-bar">
           <input
@@ -30,7 +30,7 @@ export const NavbarAdmin = () => {
           </button>
         </div>
         <li>
-          <Link to="/dashboard">Dashboard</Link>
+          <Link to="/dashboard">Clientes</Link>
         </li>
       </ul>
     </nav>

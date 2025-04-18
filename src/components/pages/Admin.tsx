@@ -21,12 +21,13 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [currentClientId, setCurrentClientId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [selectedDate, setSelectedDate] = useState<string>("");
   const formRef = useRef<HTMLDivElement>(null);
 
   const services = [
     { name: "Sombrancelha (15min)", duration: 15 },
-    { name: "Pésinho (10min)", duration: 10 },
-    { name: "Barba(20min)", duration: 20 },
+    { name: "Pezinho (10min)", duration: 10 },
+    { name: "Barba (20min)", duration: 20 },
     { name: "Corte (40min)", duration: 40 },
     { name: "Corte+Sombrancelha (50min)", duration: 50 },
     { name: "Corte+Barba (1h)", duration: 60 },
@@ -37,7 +38,7 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
 
   const fetchClientes = async () => {
     try {
-      const response = await axios.get(`${api}/cliente/agendadodia`);
+      const response = await axios.get(`${api}/cliente`);
       setClientes(response.data);
     } catch (error) {
       console.log(error);
@@ -49,6 +50,11 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
   useEffect(() => {
     fetchClientes();
   }, [api]);
+
+  // Filtra clientes pela data selecionada
+  const filteredClientes = selectedDate
+    ? clientes.filter((cliente) => cliente.date === selectedDate)
+    : clientes;
 
   const resetForm = () => {
     setName("");
@@ -260,9 +266,18 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
         </form>
       </div>
       <div className="separate"></div>
+      <div className="date-picker">
+        <label htmlFor="date">Selecione uma data:</label>
+        <input
+          type="date"
+          id="date"
+          value={selectedDate}
+          onChange={(e) => setSelectedDate(e.target.value)}
+        />
+      </div>
       <AgendaAdmin
         isLoading={isLoading}
-        clientes={clientes}
+        clientes={filteredClientes}
         deleteCliente={deleteCliente}
         startEdit={startEdit}
       />

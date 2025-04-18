@@ -17,15 +17,10 @@ const AgendaAdmin = ({
     ? clientes.filter((cliente) => cliente.barber === filter)
     : clientes;
 
-  const date = new Date();
-  const formattedDate = `${String(date.getDate()).padStart(2, "0")}/${String(
-    date.getMonth() + 1
-  ).padStart(2, "0")}/${String(date.getFullYear()).slice(2)}`;
-
   return (
     <div>
       <div className="agenda-container">
-        <h2>Agenda: {formattedDate}</h2>
+        <h2>Agenda:</h2>
         <p className="text-center">Filtre a agenda:</p>
         <div className="filter-buttons">
           <button onClick={() => setFilter("Gui")}>Gui</button>
@@ -38,7 +33,7 @@ const AgendaAdmin = ({
           </div>
         ) : filteredClientes.length === 0 ? (
           <>
-            <p className="no-appointments">Ainda não temos agendamentos hoje</p>
+            <p className="no-appointments">Ainda não temos agendamentos</p>
             <div className="icon-warning">
               <LuMessageCircleWarning />
             </div>

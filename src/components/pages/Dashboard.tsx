@@ -24,7 +24,7 @@ const Dashboard: React.FC<ScheduleProps> = ({ api }) => {
   return (
     <div className="dashboard-container">
       <NavbarAdmin />
-      <h1>Dashboard</h1>
+      <h1>Histórico</h1>
       <table>
         <thead>
           <tr>

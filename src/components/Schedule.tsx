@@ -5,12 +5,12 @@ import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import Map from "./Map";
 import Banner from "./Banner";
-import Agenda from "./Agenda";
 import Carrossel from "./Carrossel";
 import { AxiosError } from "axios";
 import Cliente from "../interfaces/Cliente";
 import ScheduleProps from "../interfaces/ScheduleProps";
 import Navbar from "./Navbar";
+import Agenda from "./Agenda";
 
 const Schedule: React.FC<ScheduleProps> = ({ api }) => {
   const [clientes, setClientes] = useState<Cliente[]>([]);
@@ -25,8 +25,8 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
 
   const services = [
     { name: "Sombrancelha (15min)", duration: 15 },
-    { name: "Pésinho (10min)", duration: 10 },
-    { name: "Barba(20min)", duration: 20 },
+    { name: "Pezinho (10min)", duration: 10 },
+    { name: "Barba (20min)", duration: 20 },
     { name: "Corte (40min)", duration: 40 },
     { name: "Corte+Sombrancelha (50min)", duration: 50 },
     { name: "Corte+Barba (1h)", duration: 60 },

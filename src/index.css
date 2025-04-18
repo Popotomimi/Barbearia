@@ -448,6 +448,34 @@ svg.edit:hover {
   color: orange;
 }
 
+.date-picker {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 8px;
+  margin: 0 auto;
+  width: 80%;
+}
+
+.date-picker label {
+  font-size: 1rem;
+  color: #fff;
+}
+
+.date-picker input[type="date"] {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+}
+
+.date-picker input[type="date"]:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+}
+
 /* Carrossel */
 
 .conteudo {
@@ -613,6 +641,7 @@ th {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  table-layout: fixed;
 }
 
 .cliente-details-table th,
@@ -620,6 +649,8 @@ th {
   border: 1px solid #ddd;
   padding: 10px;
   text-align: left;
+  word-wrap: break-word;
+  overflow: hidden;
 }
 
 .cliente-details-table th {
