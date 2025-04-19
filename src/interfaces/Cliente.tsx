@@ -4,7 +4,7 @@ interface Cliente {
   date: string;
   time: string;
   service: string;
-  duration?: number;
+  duration: number;
   barber: string;
   phone: string;
 }

@@ -286,11 +286,6 @@ input[type="submit"]:hover {
   border: solid 1px transparent;
 }
 
-.filter-buttons button:hover {
-  background-color: #222;
-  border: solid 1px #ffc107;
-}
-
 .filter-buttons button:active {
   transform: scale(0.95);
 }
@@ -298,6 +293,39 @@ input[type="submit"]:hover {
 .filter-buttons button:focus {
   outline: none;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.filter-buttons .active-button {
+  background-color: #ffc107;
+  color: #222;
+  font-weight: bold;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.time-slot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.time-slot.available {
+  background-color: #d4fcd4;
+  color: #2a5934;
+}
+
+.time-slot.occupied {
+  background-color: #fcd4d4;
+  color: #59342a;
 }
 
 .agenda-grid {
@@ -451,6 +479,8 @@ svg.edit:hover {
 .date-picker {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
   gap: 8px;
   margin: 0 auto;
@@ -514,6 +544,7 @@ svg.edit:hover {
 .carrossel-container img {
   width: 100%;
   max-height: 450px;
+  border-radius: 8px;
 }
 
 .swiper-button-prev,

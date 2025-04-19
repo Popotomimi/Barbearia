@@ -125,6 +125,11 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
 
     const selectedService = services.find((srv) => srv.name === service);
 
+    if (!selectedService || !selectedService.duration) {
+      toast.warning("Por favor, selecione um serviço válido.");
+      return;
+    }
+
     const cliente = {
       name,
       date,
