@@ -476,34 +476,41 @@ svg.edit:hover {
   color: orange;
 }
 
-.date-picker {
+.swiper-container {
+  margin-bottom: 50px !important;
+}
+
+.swiper {
+  margin: 20px auto;
+  width: 90%;
+}
+
+.swiper-slide {
+  text-align: center;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-align: center;
-  gap: 8px;
-  margin: 0 auto;
-  width: 80%;
 }
 
-.date-picker label {
-  font-size: 1rem;
-  color: #fff;
-}
-
-.date-picker input[type="date"] {
-  padding: 8px;
+.date-button {
+  background-color: #222;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
-  color: #333;
+  border-radius: 5px;
+  padding: 10px 15px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.date-picker input[type="date"]:focus {
-  border-color: #007bff;
-  outline: none;
-  box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+.date-button:hover {
+  background-color: #333;
+}
+
+.date-button.active {
+  background-color: #ffc107;
+  color: #000;
 }
 
 /* Carrossel */
@@ -549,7 +556,7 @@ svg.edit:hover {
 
 .swiper-button-prev,
 .swiper-button-next {
-  color: #fff !important;
+  color: #c3c3c3 !important;
 }
 
 /* Maps */
@@ -814,6 +821,15 @@ footer span:hover {
   .actions label,
   .actions svg {
     margin-right: 5px;
+  }
+
+  .swiper {
+    width: 100%;
+  }
+
+  .date-button {
+    font-size: 14px;
+    padding: 8px 10px;
   }
 
   /* Map */

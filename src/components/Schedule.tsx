@@ -24,18 +24,18 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
   const formRef = useRef<HTMLDivElement>(null);
 
   const services = [
-    { name: "Sombrancelha (15min)", duration: 15 },
+    { name: "Sobrancelha (15min)", duration: 15 },
     { name: "Pezinho (10min)", duration: 10 },
     { name: "Barba (20min)", duration: 20 },
     { name: "Corte (40min)", duration: 40 },
-    { name: "Corte+Sombrancelha (50min)", duration: 50 },
-    { name: "Corte+Barba (1h)", duration: 60 },
-    { name: "Corte+barba+sobrancelha (1h e 10min)", duration: 70 },
+    { name: "Corte e sobrancelha (50min)", duration: 50 },
+    { name: "Corte e barba (1h)", duration: 60 },
+    { name: "Corte, barba e sobrancelha (1h e 10min)", duration: 70 },
   ];
 
   const fetchClientes = async () => {
     try {
-      const response = await axios.get(`${api}/cliente/agendadodia`);
+      const response = await axios.get(`${api}/cliente`);
       setClientes(response.data);
     } catch (error) {
       console.log(error);
@@ -167,7 +167,7 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
       <Banner />
       <div className="make-schedule" ref={formRef}>
         {name ? (
-          <h1>{`Bem vindo ${name} faça seu agendamento`}</h1>
+          <h1>{`Bem vindo ${name}, faça seu agendamento`}</h1>
         ) : (
           <h1>Faça seu Agendamento</h1>
         )}

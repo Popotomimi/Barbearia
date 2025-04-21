@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/swiper-bundle.css";
+import { Navigation } from "swiper/modules";
 import Cliente from "../interfaces/Cliente";
 import { LuMessageCircleWarning } from "react-icons/lu";
 
@@ -54,13 +57,27 @@ const calculateSchedule = (
 };
 
 const Agenda = ({ clientes }: { clientes: Cliente[] }) => {
-  const [filter, setFilter] = useState<string>("Gui"); // Filtro inicial definido para "Gui"
-  const startTime = "09:00"; // Horário de abertura
-  const endTime = "21:00"; // Horário de fechamento
+  const [filterBarber, setFilterBarber] = useState<string>("Gui");
+  const [activeDate, setActiveDate] = useState<string | null>(null);
+  const startTime = "09:00";
+  const endTime = "21:00";
 
-  // Filtrar clientes por barbeiro
+  // Criação do array único de datas
+  const uniqueDates = Array.from(
+    new Set(clientes.map((cliente) => cliente.date))
+  ).sort();
+
+  // Obtém a data atual e configura como ativa na inicialização
+  useEffect(() => {
+    const today = new Date().toISOString().split("T")[0]; // Data no formato AAAA-MM-DD
+    setActiveDate(today); // Define a data ativa como a de hoje
+  }, []);
+
+  // Filtrar clientes por barbeiro e data ativa
   const filteredClientes = clientes.filter(
-    (cliente) => cliente.barber === filter
+    (cliente) =>
+      cliente.barber === filterBarber &&
+      (!activeDate || cliente.date === activeDate)
   );
 
   return (
@@ -69,16 +86,43 @@ const Agenda = ({ clientes }: { clientes: Cliente[] }) => {
       <p className="text-center">Filtre por barbeiro:</p>
       <div className="filter-buttons">
         <button
-          className={filter === "Gui" ? "active-button" : ""}
-          onClick={() => setFilter("Gui")}>
+          className={filterBarber === "Gui" ? "active-button" : ""}
+          onClick={() => setFilterBarber("Gui")}>
           Gui
         </button>
         <button
-          className={filter === "Gabriel" ? "active-button" : ""}
-          onClick={() => setFilter("Gabriel")}>
+          className={filterBarber === "Gabriel" ? "active-button" : ""}
+          onClick={() => setFilterBarber("Gabriel")}>
           Gabriel
         </button>
       </div>
+
+      <p className="text-center">Filtre por dia:</p>
+      <Swiper
+        className="swiper-container"
+        spaceBetween={10}
+        slidesPerView={1}
+        navigation={true}
+        modules={[Navigation]}
+        breakpoints={{
+          768: {
+            slidesPerView: 3,
+          },
+        }}
+        onSlideChange={(swiper) =>
+          setActiveDate(uniqueDates[swiper.activeIndex])
+        }>
+        {uniqueDates.map((date) => (
+          <SwiperSlide key={date}>
+            <button
+              className={`date-button ${date === activeDate ? "active" : ""}`}
+              onClick={() => setActiveDate(date)}>
+              {date.split("-").reverse().join("/")}
+            </button>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+
       <p className="working-hours">
         <strong>Horário de funcionamento:</strong> {startTime} às {endTime}
       </p>
