@@ -5,7 +5,7 @@ import ScheduleProps from "../interfaces/ScheduleProps";
 import History from "../interfaces/History";
 import { NavbarAdmin } from "./NavbarAdmin";
 
-const ClienteDetails: React.FC<ScheduleProps> = ({ api }) => {
+const HistoryDetails: React.FC<ScheduleProps> = ({ api }) => {
   const { id } = useParams();
   const [cliente, setCliente] = useState<History | null>(null);
 
@@ -57,4 +57,4 @@ const ClienteDetails: React.FC<ScheduleProps> = ({ api }) => {
   );
 };
 
-export default ClienteDetails;
+export default HistoryDetails;

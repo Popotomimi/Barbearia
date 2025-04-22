@@ -100,8 +100,8 @@ const Agenda = ({ clientes }: { clientes: Cliente[] }) => {
       <p className="text-center">Filtre por dia:</p>
       <Swiper
         className="swiper-container"
-        spaceBetween={10}
-        slidesPerView={1}
+        spaceBetween={5}
+        slidesPerView={2}
         navigation={true}
         modules={[Navigation]}
         breakpoints={{
