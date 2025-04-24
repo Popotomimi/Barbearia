@@ -33,7 +33,7 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
     { name: "Corte, barba e sobrancelha (1h e 10min)", duration: 70 },
   ];
 
-  const barbers = ["Gabriel", "Gui"];
+  const barbers = ["Gabriel", "Gui", "Buguinha"];
 
   const fetchClientes = async () => {
     try {

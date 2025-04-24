@@ -219,6 +219,7 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
               <option value="">Selecione um barbeiro</option>
               <option value="Gabriel">Gabriel</option>
               <option value="Gui">Gui</option>
+              <option value="Buguinha">Buguinha</option>
             </select>
           </div>
           <div className="form-control">

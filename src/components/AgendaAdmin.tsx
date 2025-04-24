@@ -56,6 +56,11 @@ const AgendaAdmin = ({
             onClick={() => setFilterBarber("Gabriel")}>
             Gabriel
           </button>
+          <button
+            className={filterBarber === "Buguinha" ? "active-button" : ""}
+            onClick={() => setFilterBarber("Buguinha")}>
+            Buguinha
+          </button>
         </div>
 
         <p className="text-center">Filtre por dia:</p>
