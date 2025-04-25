@@ -9,6 +9,7 @@ import Carrossel from "./Carrossel";
 import { AxiosError } from "axios";
 import Cliente from "../interfaces/Cliente";
 import ScheduleProps from "../interfaces/ScheduleProps";
+import Bloqueio from "../interfaces/Bloqueio";
 import Navbar from "./Navbar";
 import Agenda from "./Agenda";
 
@@ -21,6 +22,8 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
   const [phone, setPhone] = useState<string>("");
   const [selectedBarber, setSelectedBarber] = useState<string>("");
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
+  const [bloqueios, setBloqueios] = useState<Bloqueio[]>([]);
+
   const formRef = useRef<HTMLDivElement>(null);
 
   const services = [
@@ -83,6 +86,17 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
 
     const newEndTime = calculateEndTime(time, selectedService.duration);
 
+    // Verificar bloqueios
+    for (const bloqueio of bloqueios) {
+      if (bloqueio.barber !== selectedBarber) continue;
+      if (bloqueio.date !== date) continue;
+
+      if (time < bloqueio.endTime && newEndTime > bloqueio.startTime) {
+        return `O horário desejado está bloqueado por motivo: "${bloqueio.motivo}". Escolha outro horário.`;
+      }
+    }
+
+    // Verificar agendamentos existentes
     for (const cliente of clientes) {
       if (cliente.barber !== selectedBarber) continue;
       if (cliente.date !== date) continue;
@@ -108,6 +122,19 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
 
     return null;
   };
+
+  const fetchBloqueios = async () => {
+    try {
+      const response = await axios.get(`${api}/bloqueios`);
+      setBloqueios(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchBloqueios();
+  }, [api]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();

@@ -21,6 +21,9 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [currentClientId, setCurrentClientId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [startTime, setStartTime] = useState<string>("");
+  const [endTime, setEndTime] = useState<string>("");
+  const [motivo, setMotivo] = useState<string>("");
   const formRef = useRef<HTMLDivElement>(null);
 
   const services = [
@@ -180,6 +183,18 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
     formRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const handleBloqueioSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    const bloqueio = {
+      barber: selectedBarber,
+      date,
+      startTime,
+      endTime,
+      motivo,
+    };
+    await axios.post(`${api}/bloqueios`, bloqueio);
+  };
+
   return (
     <div>
       <NavbarAdmin />
@@ -257,6 +272,60 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
           ) : (
             <input type="submit" value={isEditing ? "Editar" : "Agendar"} />
           )}
+        </form>
+      </div>
+      <div className="separate"></div>
+      <div className="make-schedule" ref={formRef}>
+        <h1>Adicionar Bloqueio</h1>
+        <form onSubmit={handleBloqueioSubmit}>
+          <div className="form-control">
+            <label>Barbeiro:</label>
+            <select
+              value={selectedBarber}
+              onChange={(e) => setSelectedBarber(e.target.value)}>
+              <option value="">Selecione um barbeiro</option>
+              <option value="Gabriel">Gabriel</option>
+              <option value="Gui">Gui</option>
+              <option value="Buguinha">Buguinha</option>
+            </select>
+          </div>
+
+          <div className="form-control">
+            <label>Data:</label>
+            <input
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
+          </div>
+
+          <div className="form-control">
+            <label>Início:</label>
+            <input
+              type="time"
+              value={startTime}
+              onChange={(e) => setStartTime(e.target.value)}
+            />
+          </div>
+
+          <div className="form-control">
+            <label>Fim:</label>
+            <input
+              type="time"
+              value={endTime}
+              onChange={(e) => setEndTime(e.target.value)}
+            />
+          </div>
+
+          <div className="form-control">
+            <label>Motivo:</label>
+            <input
+              type="text"
+              value={motivo}
+              onChange={(e) => setMotivo(e.target.value)}
+            />
+          </div>
+          <input type="submit" value="Adicionar" />
         </form>
       </div>
       <div className="separate"></div>
