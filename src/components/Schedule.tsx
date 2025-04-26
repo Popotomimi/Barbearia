@@ -89,10 +89,22 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
     // Verificar bloqueios
     for (const bloqueio of bloqueios) {
       if (bloqueio.barber !== selectedBarber) continue;
-      if (bloqueio.date !== date) continue;
 
-      if (time < bloqueio.endTime && newEndTime > bloqueio.startTime) {
-        return `O horário desejado está bloqueado por motivo: "${bloqueio.motivo}". Escolha outro horário.`;
+      const bloqueioStartDate = new Date(bloqueio.startDate);
+      const bloqueioEndDate = bloqueio.endDate
+        ? new Date(bloqueio.endDate)
+        : bloqueioStartDate;
+      const agendamentoDate = new Date(date);
+
+      // Verificar se a data do agendamento está dentro do intervalo de datas do bloqueio
+      if (
+        agendamentoDate >= bloqueioStartDate &&
+        agendamentoDate <= bloqueioEndDate
+      ) {
+        // Verificar conflito de horários
+        if (time < bloqueio.endTime && newEndTime > bloqueio.startTime) {
+          return `O horário desejado está bloqueado por motivo: "${bloqueio.motivo}". Escolha outro horário.`;
+        }
       }
     }
 
@@ -125,7 +137,7 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
 
   const fetchBloqueios = async () => {
     try {
-      const response = await axios.get(`${api}/bloqueios`);
+      const response = await axios.get(`${api}/cliente/bloqueios`);
       setBloqueios(response.data);
     } catch (error) {
       console.log(error);

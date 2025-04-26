@@ -24,6 +24,8 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
   const [startTime, setStartTime] = useState<string>("");
   const [endTime, setEndTime] = useState<string>("");
   const [motivo, setMotivo] = useState<string>("");
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
   const formRef = useRef<HTMLDivElement>(null);
 
   const services = [
@@ -62,6 +64,11 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
     setIsEditing(false);
     setCurrentClientId(null);
     setPhone("");
+    setMotivo("");
+    setStartDate("");
+    setEndDate("");
+    setStartTime("");
+    setEndTime("");
   };
 
   const calculateEndTime = (startTime: string, duration: number): string => {
@@ -185,14 +192,23 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
 
   const handleBloqueioSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    if (!selectedBarber || !startDate || !startTime || !endTime || !motivo) {
+      toast.warning("Por favor, preencha todos os campos!");
+      return;
+    }
+
     const bloqueio = {
       barber: selectedBarber,
-      date,
       startTime,
       endTime,
       motivo,
+      startDate,
+      endDate,
     };
-    await axios.post(`${api}/bloqueios`, bloqueio);
+    await axios.post(`${api}/cliente/bloqueios`, bloqueio);
+    toast.success("Bloqueio adicionado com sucesso!");
+    resetForm();
   };
 
   return (
@@ -284,18 +300,29 @@ const Admin: React.FC<ScheduleProps> = ({ api }) => {
               value={selectedBarber}
               onChange={(e) => setSelectedBarber(e.target.value)}>
               <option value="">Selecione um barbeiro</option>
-              <option value="Gabriel">Gabriel</option>
-              <option value="Gui">Gui</option>
-              <option value="Buguinha">Buguinha</option>
+              {barbers.map((barber) => (
+                <option key={barber} value={barber}>
+                  {barber}
+                </option>
+              ))}
             </select>
           </div>
 
           <div className="form-control">
-            <label>Data:</label>
+            <label>Data Inicial:</label>
             <input
               type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+          </div>
+
+          <div className="form-control">
+            <label>Data Final (opcional):</label>
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
             />
           </div>
 

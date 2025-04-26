@@ -1,6 +1,7 @@
 interface Bloqueio {
   barber: string;
-  date: string;
+  endDate: string;
+  startDate: string;
   startTime: string;
   endTime: string;
   motivo: string;
