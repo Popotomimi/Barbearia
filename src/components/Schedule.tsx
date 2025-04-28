@@ -103,7 +103,11 @@ const Schedule: React.FC<ScheduleProps> = ({ api }) => {
       ) {
         // Verificar conflito de horários
         if (time < bloqueio.endTime && newEndTime > bloqueio.startTime) {
-          return `O horário desejado está bloqueado por motivo: "${bloqueio.motivo}". Escolha outro horário.`;
+          if (bloqueio.endDate) {
+            return `O horário desejado está bloqueado por motivo: "${bloqueio.motivo}". O barbeiro só voltará após ${bloqueio.endDate}.`;
+          } else {
+            return `O horário desejado está bloqueado por motivo: "${bloqueio.motivo}". A agenda estará desbloqueada às ${bloqueio.endTime}.`;
+          }
         }
       }
     }
